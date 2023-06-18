@@ -1,0 +1,57 @@
+.App{
+  background: linear-gradient(#000000, #484848	);
+  
+  min-height: 100vh;
+  color: white;
+}
+
+
+.animation-container {
+  position: relative;
+  perspective: 200px; /* Adds a 3D perspective */
+}
+
+.animated-image {
+  width: 150px;
+  height: 100px;
+  transition: transform 1s ease, opacity 1s ease;
+  transform: translateZ(-50px);
+  opacity: 0;
+}
+
+.animated-image.triggered {
+  transition-delay: 0.5s; 
+  opacity: 1;
+  transform:translateZ(50px);
+}
+.animated-image:hover{
+  transform:rotateY(-360deg) translateZ(90px) translateY(12px);
+  z-index: 100;
+  opacity: 1;
+}
+
+.slide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  position: relative;
+}
+
+.slide img {
+  width: 100%;
+  height: auto;
+}
+
+.slide-text {
+  position: relative;
+  bottom: 20px;
+  left: 20px;
+  color: white;
+  transition-delay: 0.5s;
+  opacity: 1;
+  transform:translateZ(50px);
+}
+
+.slide-text-right{
+  align-items: end;
+  margin-right: 100px;
+}
