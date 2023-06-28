@@ -13,6 +13,7 @@ import LearnMore from './pages/LearnMore';
 import Test from './pages/Test'
 import Payment from './pages/Payment';
 import Completion from './pages/Completion';
+import Dashboard from './pages/Dashboard';
 
 const router=createBrowserRouter([
   {
@@ -43,6 +44,10 @@ const router=createBrowserRouter([
     path:"/completion",
     element:<Completion/>
   },
+  {
+    path:"/dashboard",
+    element:<Dashboard/>
+  }
   
 ])
 function App() {

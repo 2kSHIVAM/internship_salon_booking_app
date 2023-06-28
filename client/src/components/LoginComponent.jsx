@@ -1,6 +1,26 @@
 import React from 'react'
 import 'flowbite'
+import Axios from 'axios'
+import {  useNavigate } from 'react-router-dom';
 const LoginComponent = () => {
+  const navigate=useNavigate()
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log("helo")
+    try {
+      const res = await Axios.post("http://localhost:3001/api/v1/user/login", {
+        email: document.getElementById("emaili").value,
+        password: document.getElementById("passwordi").value,
+        // confirmPassword: document.getElementById("cpasswordd").value,
+      });
+
+      console.log(res.data);
+      navigate('/');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div>
                 <div className='p-10 rounded-lg'>
@@ -46,11 +66,11 @@ const LoginComponent = () => {
                 
 
                 <div className="relative mb-6" >
-                  <input type="text" className="peer min-h-[auto] bold w-full rounded focus:outline-none border-yellow-500 bg-transparent px-3 py-[0.32rem] leading-[2.15] focus:outline-yellow-700 transition-all duration-200  focus:placeholder:opacity-100 " id="exampleFormControlInput2" placeholder="Email address" />
+                  <input type="text" className="peer min-h-[auto] bold w-full rounded focus:outline-none border-yellow-500 bg-transparent px-3 py-[0.32rem] leading-[2.15] focus:outline-yellow-700 transition-all duration-200  focus:placeholder:opacity-100 " id="emaili" placeholder="Email address" />
                 </div>
                 {/* Password input */}
                 <div className="mb-6" data-te-input-wrapper-init>
-                  <input type="password" className="peer min-h-[auto] bold w-full rounded focus:outline-none border-yellow-500 bg-transparent px-3 py-[0.32rem] leading-[2.15] focus:outline-yellow-700 transition-all duration-200  focus:placeholder:opacity-100" id="exampleFormControlInput22" placeholder="Password" />
+                  <input type="password" className="peer min-h-[auto] bold w-full rounded focus:outline-none border-yellow-500 bg-transparent px-3 py-[0.32rem] leading-[2.15] focus:outline-yellow-700 transition-all duration-200  focus:placeholder:opacity-100" id="passwordi" placeholder="Password" />
                 </div>
                 <div className="mb-6 flex items-center justify-between">
                   {/* Remember me checkbox */}
@@ -65,7 +85,7 @@ const LoginComponent = () => {
                 </div>
                 {/* Login button */}
                 <div className="text-center lg:text-left">
-                  <button type="button" className="inline-block rounded bg-primary px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-white hover:shadow-[0_4px_9px_-4px_#000000] shadow-[0_4px_9px_-4px_#DAA520] transition duration-150 ease-in-out hover:bg-black-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]" data-te-ripple-init data-te-ripple-color="light">
+                  <button type="submit" onClick={handleSubmit} className="inline-block rounded bg-primary px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-white hover:shadow-[0_4px_9px_-4px_#000000] shadow-[0_4px_9px_-4px_#DAA520] transition duration-150 ease-in-out hover:bg-black-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]" data-te-ripple-init data-te-ripple-color="light">
                     Login
                   </button>
                   {/* Register link */}

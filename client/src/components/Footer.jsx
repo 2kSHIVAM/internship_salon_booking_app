@@ -2,7 +2,7 @@ import React from 'react'
 
 const Footer = () => {
   return (
-    <div>
+    <div className='z-999999'>
         
 <footer class="mx-auto w-full mt-20">
 

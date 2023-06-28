@@ -1,9 +1,29 @@
 import React from 'react'
+import Axios from 'axios'
+import {  useNavigate } from 'react-router-dom';
 
 const SignupComponent = () => {
+  const navigate=useNavigate()
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log("helo")
+    try {
+      const res = await Axios.post("http://localhost:3001/api/v1/user/signup", {
+        email: document.getElementById("emaill").value,
+        password: document.getElementById("passwordd").value,
+        confirmPassword: document.getElementById("cpasswordd").value,
+      });
+
+      console.log(res.data);
+      navigate('/');
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div>
-                        <div className='p-10 rounded-lg'>
+      <form action="" >
+      <div className='p-10 rounded-lg'>
                 {/*Sign in section*/}
                 <div className="flex flex-row items-center justify-center lg:justify-start">
                   <p className="mb-0 mr-4 text-lg text-yellow">Sign in with</p>
@@ -46,29 +66,26 @@ const SignupComponent = () => {
                 
 
                 <div className="relative mb-6" >
-                  <input type="text" className="peer min-h-[auto] bold w-full rounded focus:outline-none border-yellow-500 bg-transparent px-3 py-[0.32rem] leading-[2.15] focus:outline-yellow-700 transition-all duration-200  focus:placeholder:opacity-100 " id="exampleFormControlInput2" placeholder="Email address" />
+                  <input type="text" className="peer min-h-[auto] bold w-full rounded focus:outline-none border-yellow-500 bg-transparent px-3 py-[0.32rem] leading-[2.15] focus:outline-yellow-700 transition-all duration-200  focus:placeholder:opacity-100 " id="emaill" placeholder="Email address" />
                 </div>
                 {/* Password input */}
                 <div className="mb-6" data-te-input-wrapper-init>
-                  <input type="password" className="peer min-h-[auto] bold w-full rounded focus:outline-none border-yellow-500 bg-transparent px-3 py-[0.32rem] leading-[2.15] focus:outline-yellow-700 transition-all duration-200  focus:placeholder:opacity-100" id="exampleFormControlInput22" placeholder="Password" />
+                  <input type="password" className="peer min-h-[auto] bold w-full rounded focus:outline-none border-yellow-500 bg-transparent px-3 py-[0.32rem] leading-[2.15] focus:outline-yellow-700 transition-all duration-200  focus:placeholder:opacity-100" id="passwordd" placeholder="Password" />
                 </div>
                 <div className="mb-6" data-te-input-wrapper-init>
-                  <input type="password" className="peer min-h-[auto] bold w-full rounded focus:outline-none border-yellow-500 bg-transparent px-3 py-[0.32rem] leading-[2.15] focus:outline-yellow-700 transition-all duration-200  focus:placeholder:opacity-100" id="exampleFormControlInput222" placeholder="Confirm Password" />
+                  <input type="password" className="peer min-h-[auto] bold w-full rounded focus:outline-none border-yellow-500 bg-transparent px-3 py-[0.32rem] leading-[2.15] focus:outline-yellow-700 transition-all duration-200  focus:placeholder:opacity-100" id="cpasswordd" placeholder="Confirm Password" />
                 </div>
 
                 {/* Login button */}
                 <div className="text-center lg:text-left">
-                  <button type="button" className="inline-block rounded bg-primary px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-white hover:shadow-[0_4px_9px_-4px_#000000] shadow-[0_4px_9px_-4px_#DAA520] transition duration-150 ease-in-out hover:bg-black-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]" data-te-ripple-init data-te-ripple-color="light">
+                  <button type="submit" onClick={handleSubmit} className="inline-block rounded bg-primary px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-white hover:shadow-[0_4px_9px_-4px_#000000] shadow-[0_4px_9px_-4px_#DAA520] transition duration-150 ease-in-out hover:bg-black-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]" data-te-ripple-init data-te-ripple-color="light" >
                     Submit
                   </button>
-                  {/* Register link */}
-                  {/* <p className="mb-0 mt-2 pt-1 text-sm font-semibold text-white">
-                    Don't have an account?
-                    <a href="#!" className="text-yellow-500 transition duration-150 ease-in-out hover:text-yellow-600 focus:text-danger-600 active:text-danger-700"> Register</a>
-                  </p> */}
                 </div>
                 </div>
 
+
+      </form>
     </div>
   )
 }
