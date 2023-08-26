@@ -13,6 +13,9 @@ const serviceSchema=new mongoose.Schema({
     short_description:{
         type:String,
     },
+    category:{
+        type:String
+    },
     description:{
         type:String,
     },

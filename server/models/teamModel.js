@@ -58,6 +58,13 @@ const teamSchema=new mongoose.Schema({
     services:{
         type:[String]
     },
+
+    leave_start:{
+        type:String
+    },
+    leave_end:{
+        type:String
+    },
     booking:
         {
             email:{
@@ -71,8 +78,25 @@ const teamSchema=new mongoose.Schema({
             },
             dateSlots:{
                 type:[String]
+            },
+            durationSlots:{
+                type:[String]
+            }
+        },
+    requests:[
+        {
+            startDate:{
+                type:Date
+            },
+            endDate:{
+                type:Date
+            },
+            status:{
+                type:String,
+                enum:['Granted', 'Pending', 'Rejected','Modified']
             }
         }
+    ]
 })
 
 

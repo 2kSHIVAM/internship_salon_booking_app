@@ -95,7 +95,7 @@ const BookingMenu = () => {
         if(data.length==0)
         setStaff("Unavailable")
         else
-        setStaff(data[0].name)
+        setStaff("")
         console.log(personList)
       }
 
@@ -103,54 +103,94 @@ const BookingMenu = () => {
       const [riskTime,setRiskTime]=useState([])
       const [riskDate,setRiskDate]=useState([])
       const [newRiskTime,setNewRiskTime]=useState([])
-      const [duration,setDuration]=useState()
+      const [newRiskDate,setNewRiskDate]=useState([])
+      const [riskDuration,setRiskDuration]=useState()
       const [displayLoading,setDisplayLoading]=useState(true)
+      const [duration,setDuration]=useState()
       const handleService=async(event)=>{
+        setDisplayLoading(true)
         setService(event.target.value)
-        for(let i=0;i<serviceList.length;i++)
+        for(let i=0;i<newServiceList.length;i++)
         {
-          if(serviceList[i].name===event.target.value)
+          if(newServiceList[i].name===event.target.value)
           {
-            setDuration(serviceList[i].duration)
-            console.log(serviceList[i].duration)
+            setDuration(newServiceList[i].duration)
+            console.log(newServiceList[i].duration)
           }
         }
         // console.log(event.target.value)
         handleEmploee(event.target.value)
       }
       let sol=[]
+      let sol2=[]
       const handleFalseTime=()=>{
         // console.log("helo")
         setDisplayLoading(false)
         sol=[]
-        let jump=Math.ceil(duration/20)
-        console.log(`${jump} jump baby jump`)
+        sol2=[]
+        // let jump=Math.ceil(duration/20)
+        // console.log(`${jump} jump baby jump`)
         // console.log(jump)
         for(let k=0;k<riskTime.length;k++)
         {
           let element=riskTime[k]
+          let element2=riskDate[k]
+          let jump= Math.floor(riskDuration[k]/20) 
+
           for(let i=0;i<timeAvaliable.length;i++)
           {
-            if(timeAvaliable[i]===element)
+            if(timeAvaliable[i]===element&&startDate.toString().substring(0,15)===element2)
             {
               // console.log("shivam")
-              for(let j=1;j<=jump;j++)
+              let idx
+              
+              for(let j=0;j<=jump;j++)
               {
-                let idx=j+i;
+                idx=j+i;
                 if(idx<timeAvaliable.length)
                 {
-                  sol.push(timeAvaliable[idx]);
+                  sol.push(timeAvaliable[idx]+","+element2);
+                  sol2.push(element2)
                 }
               }
+              i=idx;
             }
+            
           }
           // console.log("hellow")
         }
         console.log(sol.length)
-        setNewRiskTime([...riskTime,...sol])
+        // setNewRiskTime([...sol])
+        setNewRiskDate([...riskDate,...sol2])
 
           console.log("shivam")
           console.log(riskTime)
+          let j=Math.floor(duration/20)
+          for(let i=0;i<timeAvaliable.length;i++)
+            {
+              if(!(sol.includes(timeAvaliable[i]+","+startDate.toString().substring(0,15))))
+              {
+                console.log(timeAvaliable[i])
+                let f=0;
+                for(let k=i;k<=j+i;k++)
+                {
+                  if(k>=timeAvaliable.length)
+                  continue;
+                  if(sol.includes(timeAvaliable[k]+","+startDate.toString().substring(0,15)))
+                  {
+                    f=1;
+                  }
+                }
+                if(f!=0)
+                {
+                  console.log("hurrray")
+                  sol.push(timeAvaliable[i]+","+startDate.toString().substring(0,15))
+                  console.log(sol)
+                }
+              }
+            }
+            setNewRiskTime([...sol])
+
       }
       const handleTimeManagement=async(data)=>
       {
@@ -162,6 +202,7 @@ const BookingMenu = () => {
         setRiskTime(person.data.data[0].booking.timeSlots)
 
         setRiskDate(person.data.data[0].booking.dateSlots)
+        setRiskDuration(person.data.data[0].booking.durationSlots)
         // handleFalseTime()
       }
 
@@ -194,15 +235,19 @@ const BookingMenu = () => {
       const [services, setServices] = useState([]);
       const [dateSlots,setDateSlots] = useState([]);
       const [timeSlots, setTimeSlots] = useState([])
+      const [durationSlots, setDurationSlots] = useState([])
       const [employeeSelected, setEmployeeSelected] = useState([])
       const [totalPrice, setTotalPrice] = useState(0)
 
 
       const addServices = async() => {
         let c
+        let d
         serviceList.map((service1,index)=>{
           if(service1.name===service)
-          c=service1.cost
+          {c=service1.cost
+          d=service1.duration
+          }
         })
         if(staff==="Unavailable")
         {
@@ -213,11 +258,15 @@ const BookingMenu = () => {
           alert("Please select all fields")
         }
         else
-        {setServices((prevServices) => [...prevServices, `${service}`]);
+        {
+          console.log(startDate)
+
+          setServices((prevServices) => [...prevServices, `${service}`]);
          setTimeSlots((prevTimeSlots) => [...prevTimeSlots,`${timee}`]);
          setDateSlots((prevDateSlots) => [...prevDateSlots,`${startDate}`]);
          setEmployeeSelected((prevEmployeeSelected) => [...prevEmployeeSelected,`${staff}`]);
          setCostSlots((prevCostSlots) => [...prevCostSlots,`${c}`]);
+         setDurationSlots((prevDurationSlots) => [...prevDurationSlots,`${d}`]);
          setTotalPrice(totalPrice+c)
          setFinalPrice(totalPrice+c)
         //  console.log(totalPrice)
@@ -253,6 +302,11 @@ const BookingMenu = () => {
             const updatedDate = [...prevDate];
             updatedDate.splice(index, 1);
             return updatedDate;
+          });
+          setDurationSlots((prevDuration) => {
+            const updatedDuration = [...prevDuration];
+            updatedDuration.splice(index, 1);
+            return updatedDuration;
           });
           setVoucher()
           setPromocode()
@@ -336,8 +390,8 @@ const BookingMenu = () => {
           .then(res => {
             const data = res.data.data;
             setServiceList(data);
-            setService(data[0].name)
-            handleEmploee(data[0].name)
+            setService("")
+            handleEmploee("")
           })
           .catch(err => {
             console.log(err);
@@ -371,9 +425,17 @@ const BookingMenu = () => {
          else if(!paymentMethod)
          alert("Please provide payment method...")
          else{
+          const currentDate = new Date();
+          const year = currentDate.getFullYear();
+          const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+          const day = String(currentDate.getDate()).padStart(2, '0');
+
+          const formattedDate = `${year}-${month}-${day}`;    
+
           const res=await Axios.post("http://localhost:3000/api/v1/user/addBooking",{
             email:email,
             booking:{
+              name:name,
               state:state,
               payment:paymentMethod,
               country:country,
@@ -382,6 +444,9 @@ const BookingMenu = () => {
               serviceName:services,
               cost:costSlots,
               time:timeSlots,
+              durations:durationSlots,
+              chosenDate:dateSlots,
+              date:formattedDate,
               finalPrice:finalPrice
             }
           })
@@ -394,7 +459,8 @@ const BookingMenu = () => {
             employeeName:employeeSelected,
             serviceName:services,
             times:timeSlots,
-            dates:dateSlots
+            dates:dateSlots,
+            durations:durationSlots
           }
          })
         }
@@ -404,6 +470,42 @@ const BookingMenu = () => {
         //  console.log(res.data.data.newConsumer)
 
       }
+
+      let category=["Hair Cut","Shave","Hands","Legs"]
+
+      const [choiceCategory,setChoiceCategory]=useState("")
+      const [newServiceList,setNewServiceList]=useState([])
+
+      const handleCategory=(event)=>{
+        let choice=event.target.value
+        setChoiceCategory(choice)
+        let temp=[]
+        serviceList.map((element,index)=>{
+          if(element.category===choice)
+          temp.push(element)
+        })
+        setNewServiceList([...temp])
+
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        const profileTab = document.querySelector('Tab[key="profile"]');
+        if (profileTab) {
+          // Trigger the click event on the profileTab
+          const clickEvent = new Event('click', { bubbles: true });
+          profileTab.dispatchEvent(clickEvent);
+        }
+      });
+      
+      
+      
+      
+      
+      
+      
+      
+
+
   return (
         <div className="relative flex flex-col w-full bg-gray-900 rounded-[30px]  p-10 border-1 shadow-lg shadow-yellow-500/50 mr-20 ml-10 mt-20 h-full items-center">
 <Tabs value="dashboard flex flex-col items-center w-full" orientation="horizontal">
@@ -417,8 +519,8 @@ const BookingMenu = () => {
           </Tab>
         ))} */}
         <Tab key="profile" value="profile" className="place-items-start hover:bg-gray-700 hover:rounded-lg ">
-            <div className="flex items-center gap-2 text-black-700 text-yellow-700 active">
-              {React.createElement(Square3Stack3DIcon, { className: "w-5 h-5" })}
+            <div className="selected flex items-center gap-2 text-black-700 text-yellow-700 active" >
+              {React.createElement(Square3Stack3DIcon, { className: "selected w-5 h-5", id:"myDiv"})}
               {"Service"}
             </div>
         </Tab>
@@ -450,22 +552,29 @@ const BookingMenu = () => {
         ))} */}
         <TabPanel key={"profile"} value={"profile"} className="py-5">
                 <div className="flex flex-row gap-8 flex-wrap">
-                   <label className="flex flex-col">
-                        <div className="justify-center">
-                        <p className='text-[20px]'>Branch</p>
-                        </div>
-                        <div className="">
-                            <select className="w-[100px] h-[20px] text-yellow-500 bg-gray-700 rounded" value={branch} onChange={handleBranch}>
-                                <option value="branch 1" className="hover:text-yellow-500 hover:bg-black">branch 1</option>
-                                    {/* <option value="branch 2">branch 2</option>
-                                    <option value="branch 3">branch 3</option> */}
-                            </select>
-                        </div>
-                        <div className="bg-gray-700 mx-auto px-4 rounded justify-center">
-                        <p className="text-yellow-500 font-bold">{branch}</p>
-                        </div>
-                   </label>
-                   <label className="flex flex-col ">
+
+                  
+                <div className='flex flex-row mt-[10px]'>
+                    <div>
+                        <label htmlFor="underline_select" className="sr-only text-white">Underline select</label>
+                        <select id="underline_select" className="block py-2.5 px-0 w-[120px] text-[18px] text-white-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer" >
+                        <option className='bg-black' disabled selected>Branch</option>
+                        {/* {
+                          personList.map((person,index)=>{
+                            return(
+                              <option key={index} value={person.name} className='bg-black'>{person.name}</option>
+                            )
+                          })
+                        } */}
+                        <option className='bg-black' value="US">Branch 1</option>
+
+                        </select>
+                    </div>
+
+                    </div> 
+
+
+                   {/* <label className="flex flex-col ">
                         <p className='text-[20px]'>Barber</p>
                         <div className="">
                             <select className="w-[100px] h-[20px] text-yellow-500 bg-gray-700 rounded" value={barber} onChange={handleBarber}>
@@ -477,9 +586,27 @@ const BookingMenu = () => {
                         <div className="bg-gray-700 mx-auto px-4 rounded justify-center">
                         <p className="text-yellow-500 font-bold">{barber}</p>
                         </div>
-                   </label>
+                   </label> */}
 
-                   <label className="flex flex-col ">
+                  <div className='flex flex-row mt-[10px]'>
+                    <div>
+                        <label htmlFor="underline_select" className="sr-only text-white">Underline select</label>
+                        <select id="underline_select" className="block py-2.5 px-0 w-[120px] text-[18px] text-white-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer" onChange={handleCategory} >
+                        <option className='bg-black' disabled selected>Category</option>
+                        {
+                          category.map((element,index)=>{
+                            return(
+                              <option key={index} value={element} className='bg-black'>{element}</option>
+                            )
+                          })
+                        }
+
+                        </select>
+                    </div>
+
+                    </div>  
+
+                   {/* <label className="flex flex-col ">
                    <p className="text-[20px]">Service</p>
       <div className="">
         <select className="w-[100px] h-[20px] text-yellow-500 bg-gray-700 rounded" value={service} onChange={handleService}>
@@ -490,13 +617,57 @@ const BookingMenu = () => {
           ))}
         </select>
       </div>
-      <div className="bg-gray-700 w-[150px] mx-auto px-4 rounded justify-center flex flex-wrap">
+      <div className="bg-gray-700 w-[120px] mx-auto px-4 rounded justify-center flex flex-wrap">
         <p className="text-yellow-500 font-bold">{service}</p>
       </div>
 
-                   </label>
+                   </label> */}
+                   <div className='flex flex-row mt-[10px]'>
+                    <div>
+                        <label htmlFor="underline_select" className="sr-only text-white">Underline select</label>
+                        <select id="underline_select"  className="block py-2.5 px-0 w-[120px] text-[18px] text-white-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer" onChange={handleService}>
+                        <option className='bg-black' disabled selected>Service</option>
+                        {
+                          newServiceList.map((service,index)=>{
+                            return(
+                              <option key={index} value={service.name} className='bg-black'>{service.name}</option>
+                            )
+                          })
+                        }
+                        {/* <option className='bg-black' value="US">Service 1</option>
+                        <option className='bg-black' value="CA">Service 2</option>
+                        <option className='bg-black' value="FR">Service 3</option>
+                        <option className='bg-black' value="DE">Service 4</option> */}
 
-                   <label className="flex flex-col ">
+                        </select>
+                    </div>
+
+                    </div>
+
+                    <div className='flex flex-row mt-[10px]'>
+                    <div>
+                        <label htmlFor="underline_select" className="sr-only text-white">Underline select</label>
+                        <select id="underline_select" className="block py-2.5 px-0 w-[120px] text-[18px] text-white-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer" onChange={handleStaff}>
+                        <option className='bg-black' disabled selected>Staff</option>
+                        {
+                          personList.map((person,index)=>{
+                            return(
+                              <option key={index} value={person.name} className='bg-black'>{person.name}</option>
+                            )
+                          })
+                        }
+                        {/* <option className='bg-black' value="US">Service 1</option>
+                        <option className='bg-black' value="CA">Service 2</option>
+                        <option className='bg-black' value="FR">Service 3</option>
+                        <option className='bg-black' value="DE">Service 4</option> */}
+
+                        </select>
+                    </div>
+
+                    </div>
+
+
+                   {/* <label className="flex flex-col ">
                         <p className='text-[20px]'>Staff</p>
                         <div className="">
                             <select className="w-[100px] h-[20px] text-yellow-500 bg-gray-700 rounded" onChange={handleStaff}>
@@ -512,54 +683,119 @@ const BookingMenu = () => {
                         <div className="bg-gray-700 w-[120px] mx-auto px-4 rounded justify-center">
                         <p className="text-yellow-500 font-bold">{staff}</p>
                         </div>
-                   </label>
+                   </label> */}
+
+
+
                    {/* <div className="w-full h-full">
                        
                    </div> */}
                    </div>
-                   <div className="flex flex-row mt-10 text-yellow-700 font-bold mr-10 gap-5">
-                        <label className="flex flex-col bg-black p-1 rounded-[10px] hover:shadow-lg hover:shadow-yellow-500">
-                                        <p className='mb-2 text-xl'>Service Date</p>
-                            { 
-                            /*<input className=" h-[20px] text-yellow-500 bg-gray-700 rounded" type="date" id="start" name="trip-start" onChange={handleDate}
-                            value={date}
-                            min="2023-01-01" max="2023-06-13"></input> */}
-                                <DatePicker className='flex h-full w-full ' selected={startDate} onChange={(date) => setStartDate(date) } inline calendarContainer={MyContainer} minDate={new Date()} filterDate = {date=> date.getDay()!== 6 && date.getDay()!== 0} showYearDropdown scrollableMonthYearDropdown/>
-                                <p>{startDate.getDate()}-{startDate.getMonth()}-{startDate.getFullYear()}</p>
-                            </label>    
-                            <div className="flex bg-black rounded-[10px] hover:shadow-lg hover:shadow-yellow-500">
-                              <div className="flex flex-col">
-                                <p className="mb-10 text-xl">Time</p>
-                                <div className="flex flex-row items-center justify-center">
-                                  <button
-                                    type="button"
-                                    className="flex items-center rounded-[10px] hover:shadow-lg hover:shadow-gray-500 justify-center w-[200px] text-[20px] bg-white mb-5"
-                                    onClick={handleFalseTime}
-                                  >
-                                    Check Slots
-                                  </button>
-                                </div>
-                                <div className="flex flex-wrap gap-3 justify-center relative items-center overflow-auto h-[350px] pb-3">
-                                  {displayLoading && <Lottie className="" animationData={LoadingLottie} />}
-                                  {!displayLoading &&
-                                    timeAvaliable.map((element, index) => (
-                                      <div
-                                        key={index}
-                                        className={`hover:bg-yellow-700 w-[85px] ${newRiskTime.includes(element) ? "hidden" : ""} bg-gray-700 text-white font-bold ${
-                                          timee === element ? "bg-yellow-600" : ""
-                                        } focus:outline-none focus:ring focus:ring-violet-300 py-2 px-1 rounded`}
-                                        onClick={() => handleTime(element)}
-                                      >
-                                        {element}
-                                      </div>
-                                    ))}
-                                </div>
-                              </div>
+                   <div className="flex flex-col items-center justify-center mt-10 text-yellow-700 font-bold mr-10 gap-5 w-[600px]">
+  <div className='flex flex-row gap-2'>
+    <div>
+    <label className="flex flex-col ">
+    <div className='flex flex-col  bg-black border mb-3 p-1 w-[350px] rounded-[10px] items-center justify-center '>
+      <p className='mb-6 text-xl'>Service Date</p>
+      {/* <DatePicker
+        className='flex h-full w-full '
+        selected={startDate}
+        onChange={(date) => {
+          setStartDate(date);
+          setDisplayLoading(true);
+          console.log(date);
+        }}
+        inline
+        calendarContainer={MyContainer}
+        minDate={new Date()}
+        filterDate={date => date.getDay() !== 6 && date.getDay() !== 0}
+        showYearDropdown
+        scrollableMonthYearDropdown
+      /> */}
+          <div className="flex items-center ">
+        <DatePicker
+          selected={startDate}
+          // onChange={date => setStartDate(date)}
+          minDate={new Date()}
+          onChange={(date) => {
+            setStartDate(date);
+            setDisplayLoading(true);
+            console.log(date);
+          }}
+          filterDate={date => date.getDay() !== 6 && date.getDay() !== 0}
+          showYearDropdown
+        scrollableMonthYearDropdown
+          className="appearance-none bg-white border border-gray-300 rounded px-4 py-2 pr-8 focus:outline-none focus:border-blue-500"
+        />
+      </div>
+    </div>
+    <div>
+
+    </div>
+    {/* <p>{startDate.getDate()}-{startDate.getMonth()}-{startDate.getFullYear()}</p> */}
+  </label>
+  <div className="flex bg-black rounded-[10px] w-[350px] border no-scrollbar ">
+    <div className="flex flex-col items-center justify-center">
+      <p className="mb-7 text-xl">Time</p>
+      <div className="flex flex-row items-center justify-center">
+        <button
+          type="button"
+          className="flex items-center rounded-[10px] hover:shadow-lg no-scrollbar hover:shadow-gray-500 justify-center w-[200px] text-[20px] bg-white mb-5"
+          onClick={handleFalseTime}
+        >
+          Check Slots
+        </button>
+      </div>
+
+      <div className="flex flex-wrap gap-3 justify-center relative no-scrollbar items-center overflow-auto h-[350px] pb-3">
+        {displayLoading && <Lottie className="" animationData={LoadingLottie} />}
+        {!displayLoading &&
+          timeAvaliable.map((element, index) => (
+            <div
+              key={index}
+              className={`hover:bg-yellow-700 w-[85px] cursor-pointer ${newRiskTime.includes(element+","+startDate.toString().substring(0,15)) ? "hidden" : ""} bg-gray-700 text-white font-bold ${
+                timee === element ? "bg-yellow-600" : ""
+              } focus:outline-none focus:ring focus:ring-violet-300 py-2 px-1 rounded`}
+              onClick={() => handleTime(element)}
+            >
+              {element}
+            </div>
+          ))}
+      </div>
+      
+    </div>
+  </div>
+    </div>
+    <div>
+    <section className="bg-gradient-to-b from-gray-500 to-black border rounded-[10px]">
+        <div className="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
+          <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-center text-white">Have Doubts ?</h2>
+          <form action="#" className="space-y-3">
+            <div>
+              <label htmlFor="email" className="block mb-2 text-sm font-medium text-white">Your email</label>
+              <input type="email" id="email_doubt" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light" placeholder="demo@gmail.com" required />
+            </div>
+            <div>
+              <label htmlFor="subject" className="block mb-2 text-sm font-medium text-white">Subject</label>
+              <input type="text" id="subject" className="block p-1 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light" placeholder="Let us know how we can help you" required />
+            </div>
+            <div className="sm:col-span-2">
+              <label htmlFor="message" className="block mb-2 text-sm font-medium text-white">Your message</label>
+              <textarea id="message" rows={6} className="block p-1 w-full text-sm text-gray-900 bg-gray-50 rounded-lg shadow-sm border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Leave a comment..." defaultValue={""} />
+            </div>
+            <button type="submit" className="py-1 px-2 text-sm font-medium text-center text-white rounded-lg sm:w-fit focus:ring-4 focus:outline-none hover:text-yellow-500">Send message</button>
+          </form>
+        </div>
+      </section>
+
+    </div>
+
+  </div>
 </div>
 
 
-                    
-                   </div>
+
+
                    <div className='flex mt-5'>
         <div
           className='hover:bg-yellow-700 p-2 bg-yellow-700 text-white font-bold w-[100px] rounded-lg cursor-pointer'
@@ -607,6 +843,18 @@ const BookingMenu = () => {
           <div key={index}>
             <div className='flex flex-row mb-5'>
                 <p className='flex '>{element}</p>
+            </div>
+          </div>
+        ))}
+        </div>
+
+
+        <div className='flex flex-col '>
+        {dateSlots.map((element, index) => (
+
+          <div key={index}>
+            <div className='flex flex-row mb-5'>
+                <p className='flex '>{element.substring(4,10)}</p>
             </div>
           </div>
         ))}
@@ -908,27 +1156,6 @@ const BookingMenu = () => {
                 </div>
               
             </div>
-
-            {/* <div className='w-[300px] bg-black rounded-[30px] items-center justify-between mt-10 p-5 mr-2'>
-              <div className="flex flex-row gap-10">
-                <div className='flex flex-col item-center items-center justify-between bg-black mb-2 '>
-                  <p className='text-white border-b rounded-[10px] p-2'>Service  </p>
-                  <p className='text-white font-bold p-2'>Branch  </p>
-                  <p className='text-white font-bold p-2'>Date  </p>
-                  <p className='text-white font-bold p-2'>Status  </p>
-                </div>
-                <div className='flex flex-col item-center items-center justify-between bg-black mb-2 '>
-                  <p className='text-yellow-500 p-2'>Service 1</p>
-                  <p className='text-yellow-500 p-2'>Branch 1</p>
-                  <p className='text-yellow-500 p-2'>Date 1</p>
-                  <p className='p-2 text-yellow-500 font-bold'>Availed </p>
-                </div>
-                <div>
-
-                </div>
-              </div>
-              
-            </div> */}
             </div>
           </TabPanel>
 

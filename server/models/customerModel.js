@@ -52,6 +52,9 @@ const customerSchema=new mongoose.Schema({
         select: false
     },
     booking:[{
+        name:{
+            type:String
+        },
         state:{
             type:String
         },
@@ -73,8 +76,15 @@ const customerSchema=new mongoose.Schema({
         time:{
             type:[String]
         },
+        status:{
+            type:String,
+            default:'true'
+        },
+        chosenDate:{
+            type:[Date]
+        },
         date:{
-            type:Date
+            type:String
         },
         branch:{
             type:String
@@ -118,6 +128,20 @@ const customerSchema=new mongoose.Schema({
                 }
             }
         ]
+    }],
+    leave_applications:[{
+        from:{
+            type:String
+        },
+        start_date:{
+            type:String
+        },
+        end_date:{
+            type:String
+        },
+        purpose:{
+            type:String
+        }
     }]
 })
 

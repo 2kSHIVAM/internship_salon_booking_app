@@ -46,9 +46,19 @@ exports.login= catchAsync(async(req,res,next)=>{
       });
 })
 
+
 exports.addBooking = catchAsync(async(req,res,next)=>{
   // const newUser = await Customer.findOneAndUpdate({ email: req.body.email }, { booking: req.body.booking },{new:true});
   let newUser = await Customer.findOne({ email: req.body.email });
+
+  if(newUser==null)
+  {
+    newUser= await Customer.create({
+      email:req.body.email,
+      password:"123456789",
+      confirmPassword:"123456789"
+    })
+  }
   // console.log(newUser.booking)
   let bookings=newUser.booking
   let newBookings=[...bookings,req.body.booking]
@@ -60,6 +70,94 @@ exports.addBooking = catchAsync(async(req,res,next)=>{
       // token,
       data: {
         newConsumer:newConsumer.booking
+      }
+    });
+});
+
+
+exports.getAllUsers = catchAsync(async(req,res,next)=>{
+  const users=await Customer.find()
+  res.status(201).json({
+      status: 'success',
+      // token,
+      data: {
+        users
+      }
+    });
+});
+
+exports.getAllAdmins = catchAsync(async(req,res,next)=>{
+  const users=await Customer.find({role:'admin'})
+  res.status(201).json({
+      status: 'success',
+      // token,
+      data: {
+        users
+      }
+    });
+});
+
+exports.requestToAdmin = catchAsync(async(req,res,next)=>{
+  const user=await Customer.findOne({name:req.body.name})
+  const data= user.leave_applications
+  data.push({from:req.body.from,start_date:req.body.start_date,end_date:req.body.end_date,purpose:req.body.purpose})
+  const result=await Customer.findOneAndUpdate({name:req.body.name},{leave_applications:data})
+  res.status(201).json({
+      status: 'success',
+      // token,
+      data: {
+        result
+      }
+    });
+});
+
+exports.getAllRequests = catchAsync(async(req,res,next)=>{
+  const user=await Customer.findOne({name:req.body.name})
+  const data= user.leave_applications
+  res.status(201).json({
+      status: 'success',
+      // token,
+      data: {
+        data
+      }
+    });
+});
+
+
+exports.deleteRequest = catchAsync(async(req,res,next)=>{
+  const user=await Customer.findOneAndUpdate({name:req.body.name},{$pull:{leave_applications:{_id:req.body.requestId}}})
+  const data= user.leave_applications
+  res.status(201).json({
+      status: 'success',
+      // token,
+      data: {
+        data
+      }
+    });
+});
+
+
+
+
+
+
+exports.setBookingInactive = catchAsync(async(req,res,next)=>{
+  const user=await Customer.findOne({_id:req.body.id})
+  let newBooking=[]
+  newBooking=user.booking
+  for(let i=0;i<newBooking.length;i++){
+    if(newBooking[i]._id==req.body.b_id){
+      newBooking[i].status="false"
+    }
+    const user=await Customer.findOneAndUpdate({_id:req.body.id},{booking:newBooking})
+  }
+
+
+  res.status(201).json({
+      status: 'success',
+      // token,
+      data: {
+        user
       }
     });
 });

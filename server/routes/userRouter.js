@@ -6,6 +6,12 @@ const userController = require('./../controller/userController')
 router.post('/signup',userController.signup);
 router.post('/login',userController.login);
 router.post('/addBooking',userController.addBooking);
+router.get('/getAllAdmins',userController.getAllAdmins);
+router.post('/requestToAdmin',userController.requestToAdmin)
+router.patch('/deleteRequest',userController.deleteRequest);
+router.post('/getAllRequests',userController.getAllRequests)
+router.get('/getAllUsers',userController.getAllUsers);
+router.patch('/setBookingInactive',userController.setBookingInactive);
 // router.get('/logout',userController.logout);
 // router.get('/getAllTestimonials',userController.getAllTestimonials);
 // router.get('/getTestimonial/:id',userController.getTestimonial)

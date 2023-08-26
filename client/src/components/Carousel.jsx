@@ -3,7 +3,18 @@ import banner from './../pages/dddd.jpeg'
 import banner2 from './../pages/banner2.PNG'
 import 'flowbite'
 import Split from 'react-split'
+import {useEffect} from 'react'
 const Carousel = () => {
+  useEffect(() => {
+    const showAlert = localStorage.getItem('showAlert');
+
+    if (!showAlert) {
+      alert(
+        "This project is a solo effort created as part of my internship. It serves as a frontend showcase and doesn't have backend integration for security reasons,it is demo. The website uses dummy data and hides certain functionalities like the backend dashboard and registration."
+      );
+      localStorage.setItem('showAlert', 'true');
+    }
+  }, []);
 
   return (
         // <div className="carousel w-full h-100">

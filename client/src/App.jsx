@@ -1,67 +1,37 @@
-/* eslint-disable import/first */
 import './App.css';
 import React from 'react';
-// import { Route,Routes } from 'react-router-dom';
-import {createBrowserRouter, RouterProvider,} from 'react-router-dom' 
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import BookingPage from './pages/BookingPage';
-import Navbar from './components/Navbar'
-import Footer from './components/Footer'
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import Home from './pages/Home';
 import Services_main from './pages/Services_main';
 import Register from './pages/Register';
 import LearnMore from './pages/LearnMore';
-import Test from './pages/Test'
+import Test from './pages/Test';
 import Payment from './pages/Payment';
 import Completion from './pages/Completion';
 import Dashboard from './pages/Dashboard';
 
-const router=createBrowserRouter([
-  {
-    path:"/",
-    element:<Home/>
-  },
-  {
-    path:"/services",
-    element:<Services_main/>
-  },
-  {
-    path:"/register",
-    element:<Register/>
-  },
-  {
-    path:"/booking",
-    element:<BookingPage/>
-  },
-  {
-    path:"/services/learn-more",
-    element:<LearnMore/>
-  },
-  // {
-  //   path:"/test",
-  //   element:<Payment/>
-  // },
-  {
-    path:"/completion",
-    element:<Completion/>
-  },
-  {
-    path:"/dashboard",
-    element:<Dashboard/>
-  }
-  
-])
 function App() {
   return (
-    <div className='App'>
-      <Navbar/>
-      {/* <Home/> */}
-      <RouterProvider router={router}/>
-      <Footer/>
-      {/* <Modal/> */}
-    </div>
-      
+    <Router>
+      <div className='App'>
+        <Navbar />
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/services' element={<Services_main />} />
+          <Route path='/register' element={<Register />} />
+          <Route path='/booking' element={<BookingPage />} />
+          <Route path='/services/learn-more' element={<LearnMore />} />
+          <Route path='/faq' element={<Test />} />
+          <Route path='/completion' element={<Completion />} />
+          <Route path='/dashboard' element={<Dashboard />} />
+        </Routes>
+        <Footer />
+      </div>
+    </Router>
   );
 }
-import { Form } from 'react-router-dom';
 
 export default App;

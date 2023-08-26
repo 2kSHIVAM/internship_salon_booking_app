@@ -22,6 +22,8 @@ const DashboardTeamComponent = () => {
       const [image,setImage]=useState("")
       const [servicesProvided,setServicesProvided]=useState([])
       const [serviceSelected,setServiceSelected]=useState([])
+      const [leave_start_date,setLeaveStartDate]=useState("")
+      const [leave_end_date,setLeaveEndDate]=useState("")
       const handleClick=(data)=>{
           // setDetails(data)
           setEditMode("editt")
@@ -42,12 +44,30 @@ const DashboardTeamComponent = () => {
           setServiceSelected(data.services)
           setImage(data.image)
           setId(data._id)
+          const currentDate = new Date();
+          const year = currentDate.getFullYear();
+          const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+          const day = String(currentDate.getDate()).padStart(2, '0');
+          
+          const formattedDate = `${year}-${month}-${day}`;
+          console.log(formattedDate);
+          
+          const currentDateObj = new Date(formattedDate);
+          const leaveStartObj = new Date(data.leave_start);
+          const leaveEndObj = new Date(data.leave_end);
+          
+          if (currentDateObj >= leaveStartObj && currentDateObj <= leaveEndObj) {
+            setLeaveStartDate(data.leave_start);
+            setLeaveEndDate(data.leave_end);
+          }
+          else{
+            console.log("aaaaaaaaaaaa")
+          }
           // console.log(id)
           // duration=data.duration
           // cost=data.cost
           // limit=data.limit
           // description=data.description
-  
           // console.log(duration)
       }
   
@@ -132,7 +152,9 @@ const DashboardTeamComponent = () => {
             imageLink:image,
             address: address,
             salary: salary,
-            services:serviceSelected
+            services:serviceSelected,
+            leave_start:leave_start_date,
+            leave_end:leave_end_date
           }
         );
   
@@ -154,6 +176,15 @@ const DashboardTeamComponent = () => {
               setSubmitButtonData("Save Changes")
         }, 2000);
     };
+
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+
+    const formattedDate = `${year}-${month}-${day}`;
+
+    console.log(formattedDate);
   
     const [serviceType,setServiceType]=useState("update")
     return (
@@ -189,14 +220,47 @@ const DashboardTeamComponent = () => {
                       {serviceList.map((service, index) =>{
                                       if(service.name.toUpperCase().includes(isFound.toUpperCase()))
                                       {
+
                           return(
                               <div class="hover:shadow-lg hover:shadow-yellow-500/50 transition-all duration-200 max-w-xs bg-black border border-gray-600 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 ml-10 mt-5" >
                               <a href="#">
-                              <img class="rounded-t-lg" src={service.imageLink} alt="" />
+                                <div className="relative">
+                                  <div
+                                    className={`absolute ${
+                                      
+                                      new Date(formattedDate) <= new Date(service.leave_end) && new Date(service.leave_start) <= new Date(formattedDate)
+                                        ? 'bg-red-700'
+                                        : 'bg-green-700'
+                                    } top-0 right-0 h-14 w-14 flex items-center justify-center rounded-bl-full rounded-tr-lg`}
+                                  >
+                                    <span className="text-white text-lg font-bold"></span>
+                                  </div>
+                                  <img className="rounded-t-lg" src={service.imageLink} alt="" />
+                                </div>
                               </a>
                               <div class="p-5">
                                   <a href="#">
-                                      <h5 class="mb-2 text-2xl font-bold tracking-tight text-white-900 dark:text-white">{service.name}</h5>
+                                  <div className='flex flex-row gap-10 flex-wrap items-center mb-2'>
+                                    <div className='flex justify-start'>
+                                      <h5 className="text-2xl font-bold tracking-tight text-white-900 dark:text-white">
+                                        {service.name}
+                                      </h5>
+                                    </div>
+                                    <div className='flex gap-2 items-center ml-auto'>
+                                      <p className='text-[20px]'>Status:</p>
+                                      {new Date(formattedDate) <= new Date(service.leave_end) &&
+                                      new Date(service.leave_start) <= new Date(formattedDate) ? (
+                                        <div>
+                                          <p className='text-red-500 mt-1 font-bold'>Absent</p>
+                                        </div>
+                                      ) : (
+                                        <div>
+                                          <p className='text-green-500 mt-1 font-bold'>Present</p>
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+
                                   </a>
                                   <p class="mb-3 font-normal text-gray-400 dark:text-gray-400"></p>
                                   <a href="#" onClick={()=>{handleClick(service)}} className={` ${serviceType!="update"&& "hidden"} inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-yellow-700 rounded-lg hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800`}>
@@ -205,7 +269,7 @@ const DashboardTeamComponent = () => {
                                   </a>
                                   <a href="#" onClick={()=>{handleDelete(service)}} className={` ${serviceType!="delete"&& "hidden"} inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-yellow-700 rounded-lg hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800`}>
                                       Delete  
-                                      <div className='text-red-500 rounded ml-1'>
+                                      <div className='text-white rounded ml-1'>
                                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                           <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
                                       </svg>
@@ -316,8 +380,25 @@ const DashboardTeamComponent = () => {
                                       }
                                     </div>
                                   </div>
+
+                                  
                                   
                               </div>
+                              </div>
+                              <div className='flex flex-col gap-2'>
+                                <div className='flex items-center justify-center'>
+                                  <p className='text-[35px] bg-gray-800 px-3 font-bold'>Leave Section</p>
+                                </div>
+                                  <div className='flex flex-row gap-3 items-center justify-center mt-10'>
+                                    <div className='flex flex-col gap-6 text-[20px]'>
+                                      <p>Start Date</p>
+                                      <p>End Date</p>
+                                    </div>
+                                    <div className='flex flex-col gap-3'>
+                                      <input type="date" className='bg-gray-700 rounded-[10px]' value={leave_start_date} onChange={(e)=>setLeaveStartDate(e.target.value)} name="leave_start_date" id="" />
+                                      <input type="date" className='bg-gray-700 rounded-[10px]' value={leave_end_date} onChange={(e)=>setLeaveEndDate(e.target.value)} name="leave_start_date" id="" />
+                                    </div>
+                                  </div>
                               </div>
               <div>
                   <button type="button" className='bg-yellow-500 p-2 rounded-lg mr-10' onClick={()=>{

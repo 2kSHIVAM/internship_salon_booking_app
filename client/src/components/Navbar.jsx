@@ -3,7 +3,7 @@ import { useState,useEffect } from 'react'
 import useScript from '../hooks/useScript';
 import 'flowbite'
 import logo from './salon_logo.png'
-// import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   // useScript('')
@@ -46,10 +46,11 @@ const Navbar = () => {
         <div>
         <div class="max-w-screen-xl flex flex-row flex-wrap items-center justify-between mx-auto p-2">
           <div className='animation-container overflow-visible z-50'>
-          <a href="/" class="flex animation-container perspective-1000">
+          <Link to="/" >
+              <div class="flex animation-container perspective-1000" aria-current="page">
               <img src={logo} class={`animated-image h-20 w-30 mr-3 ${triggered ? 'triggered' : ''}`} alt="Flowbite Logo" />
-              {/* <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">noidolsbarber</span> */}
-          </a>
+              </div>
+            </Link>
           </div>
           <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
             <span class="sr-only">Open main menu</span>
@@ -58,23 +59,54 @@ const Navbar = () => {
           <div class="hidden w-full md:block md:w-auto" id="navbar-default">
             <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-transparent md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-transparent  ">
               <li>
-                {/* <Link to="/" class="block py-2 pl-3 pr-4 text-yellow-600 bg-white-700 rounded hover:bg-gray-100 md:bg-transparent md:text-yellow-600 md:p-0 dark:text-white md:dark:text-white-500 " aria-current="page">About</Link> */}
-                <a href="http://localhost:3000/" class="block py-2 pl-3 pr-4 text-white-900 bg-transparent rounded md:bg-transparent md:p-0 hover:text-yellow-500 " aria-current="page">Home</a>
+                
+                <Link to="/" >
+                  <div class="block py-2 pl-3 pr-4 text-white-900 bg-transparent rounded md:bg-transparent md:p-0 hover:text-yellow-500 " aria-current="page">
+                    Home
+                  </div>
+                </Link>
+                {/* <a href="/" class="block py-2 pl-3 pr-4 text-white-900 bg-transparent rounded md:bg-transparent md:p-0 hover:text-yellow-500 " aria-current="page">Home</a> */}
+              </li>
+              
+              <li>
+                <Link to="/services" >
+                    <div class="block py-2 pl-3 pr-4 text-white-900 active:text-yellow-700 rounded hover:bg-yellow-500 md:hover:bg-transparent md:border-0 md:hover:text-yellow-500 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent " aria-current="page">
+                      Services
+                    </div>
+                </Link>
+                {/* <a href="/services" class="block py-2 pl-3 pr-4 text-white-900 active:text-yellow-700 rounded hover:bg-yellow-500 md:hover:bg-transparent md:border-0 md:hover:text-yellow-500 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Services</a> */}
               </li>
               <li>
-                <a href="#" class="block py-2 pl-3 pr-4 text-white-900 rounded hover:bg-yellow-500 md:hover:bg-transparent md:border-0 md:hover:text-yellow-500 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">About</a>
+                <Link to="/#" >
+                  <div class="block  py-2 pl-3 pr-4 text-white-900 rounded hover:bg-yellow-500 md:hover:bg-transparent md:border-0 md:hover:text-yellow-500 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" aria-current="page">
+                    About
+                  </div>
+                </Link>
+                {/* <a href="#" class="block  py-2 pl-3 pr-4 text-white-900 rounded hover:bg-yellow-500 md:hover:bg-transparent md:border-0 md:hover:text-yellow-500 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">About</a> */}
               </li>
               <li>
-                <a href="http://localhost:3000/services" class="block py-2 pl-3 pr-4 text-white-900 active:text-yellow-700 rounded hover:bg-yellow-500 md:hover:bg-transparent md:border-0 md:hover:text-yellow-500 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Services</a>
+                <Link to="/faq" >
+                  <div class="block  py-2 pl-3 pr-4 text-white-900 rounded hover:bg-yellow-500 md:hover:bg-transparent md:border-0 md:hover:text-yellow-500 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" aria-current="page">
+                    FAQ
+                  </div>
+                </Link>
+                {/* <a href="/faq" class="block py-2 pl-3 pr-4 text-white-900 rounded hover:bg-yellow-500 md:hover:bg-transparent md:border-0 md:hover:text-yellow-500 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">FAQ</a> */}
               </li>
               <li>
-                <a href="#" class="block py-2 pl-3 pr-4 text-white-900 rounded hover:bg-yellow-500 md:hover:bg-transparent md:border-0 md:hover:text-yellow-500 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Pricing</a>
+                <Link to="/#" >
+                  <div class="block  py-2 pl-3 pr-4 text-white-900 rounded hover:bg-yellow-500 md:hover:bg-transparent md:border-0 md:hover:text-yellow-500 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" aria-current="page">
+                    Contact
+                  </div>
+                </Link>
+                {/* <a href="#" class="block py-2 pl-3 pr-4 text-white-900 rounded hover:bg-yellow-500 md:hover:bg-transparent md:border-0 md:hover:text-yellow-500 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Contact</a> */}
               </li>
               <li>
-                <a href="#" class="block py-2 pl-3 pr-4 text-white-900 rounded hover:bg-yellow-500 md:hover:bg-transparent md:border-0 md:hover:text-yellow-500 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Contact</a>
-              </li>
-              <li>
-                <a href="http://localhost:3000/register" class="block py-2 pl-3 pr-4 text-white-900 rounded hover:bg-yellow-500 md:hover:bg-transparent md:border-0 md:hover:text-yellow-500 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Register Now</a>
+                <Link to="/register" >
+                  <div class="block  py-2 pl-3 pr-4 text-white-900 rounded hover:bg-yellow-500 md:hover:bg-transparent md:border-0 md:hover:text-yellow-500 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" aria-current="page">
+                    Register Now
+                  </div>
+                </Link>
+                {/* <a href="/register" class="block py-2 pl-3 pr-4 text-white-900 rounded hover:bg-yellow-500 md:hover:bg-transparent md:border-0 md:hover:text-yellow-500 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Register Now</a> */}
               </li>
 
               <li>
@@ -124,7 +156,7 @@ const Navbar = () => {
                 <div class="w-full text-base text-center text-yellow-500 py-2">
                     use the coupon code below
                 </div>
-                <div class="flex flex-row px-4 pt-1 pt-3 text-xs bg-gray-800 sm:px-6 sm:flex sm:flex-row-reverse rounded-[30px]">
+                 <div class="flex flex-row px-4 pt-1 pt-3 text-xs bg-gray-800 sm:px-6 sm:flex sm:flex-row-reverse rounded-[30px]">
                   {
                     isCopy?(<>
                     <div
@@ -151,6 +183,9 @@ const Navbar = () => {
                         </button>
                 </div>
                 </div>
+
+
+                
             </div>
             </div>    
                 </>

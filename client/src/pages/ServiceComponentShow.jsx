@@ -6,7 +6,7 @@ const ServiceComponentShow = () => {
     <div>
         
         <div className="flex flex-row flex-wrap justify-center justify-items-stretch mr-10 mt-10 mb-[5px]">
-                <ServicesComponents
+            <ServicesComponents
             imageLink="https://c1.wallpaperflare.com/preview/510/773/86/barber-barbershop-hair-stylist-haircut.jpg"
             header="Noteworthy technology acquisitions 2021"
             />

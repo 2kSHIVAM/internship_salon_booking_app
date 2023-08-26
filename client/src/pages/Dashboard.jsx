@@ -5,6 +5,12 @@ import DashboardServiceComponent from './DashboardServiceComponent'
 import DashboardTeamComponent from "./DashboardTeamComponent";
 import DashboardVoucherComponent from './DashboardVoucherComponent';
 import DashboardBookingsComponent from "./DashboardBookingsComponent";
+import DashboardReservationComponent from "./DashboardReservationComponent";
+import DashboardEmployeeBooking from "./DashboardEmployeeBooking";
+import DashboardHolidayComponent from "./DashboardHolidayComponent";
+import DashboardRequestsComponent from "./DashboardRequestsComponent";
+import DashboardRequestStatusComponent from './DashboardRequestStatusComponent'
+
 // import 'flowbite'
 const Dashboard = () => {
   const [open, setOpen] = useState(true);
@@ -13,12 +19,15 @@ const Dashboard = () => {
 
   const Menus = [
     { title: "Service", src: "./../assets/Chart_fill",gap: true },
-    { title: "Inbox", src: "./../assets/Chat",gap: true },
-    { title: "Accounts", src: "./../assets/User", gap: true },
-    { title: "Bookings", src: "./../assets/Search",gap: true },
     { title: "Teams", src: "./../assets/Chart",gap: true },
-    { title: "Vouchers", src: "",gap: true},
-    { title: "Setting", src: "./../assets/Setting",gap: true },
+    { title: "Bookings", src: "./../assets/Search",gap: true },
+    { title: "Employee Bookings", src: "./../assets/Chat",gap: true },
+    { title: "Coupons", src: "",gap: true},
+    { title: "Make a Request", src: "./../assets/Setting",gap: true },
+    { title: "Requests", src: "./../assets/Setting",gap: true },
+    { title: "Requests Status", src: "./../assets/Setting",gap: true },
+    { title: "Make Reservation", src: "./../assets/User", gap: true },
+
   ];
 
   const handleClick = (value) => {
@@ -34,7 +43,7 @@ const Dashboard = () => {
       <div
         className={` ${
           open ? "w-60" : "w-20 "
-        } bg-gradient-to-b from-gray-700 to-yellow-700 rounded-[20px] ml-5 h-[590px] p-5  pt-8 fixed  duration-300 z-0`}
+        } bg-gradient-to-b from-gray-700 to-yellow-700 rounded-[20px] ml-5 h-[650px] p-5 relative mt-[100px] pt-8 duration-300 z-0`}
       >
         <img
           src={controlImage}
@@ -78,7 +87,7 @@ const Dashboard = () => {
       </div>
       <div className="h-full flex flex-col flex-1 p-7 ml-20">
         {
-            choice==="home"?<h1 className="text-5xl flex items-center text-yellow-500 justify-center font-semibold ">Welcome to the Dashboard</h1>:choice==="Service"? <DashboardServiceComponent/>:choice==="Teams"?<DashboardTeamComponent/>:choice==="Vouchers"?<DashboardVoucherComponent/>:choice==="Bookings"?<DashboardBookingsComponent/>:""
+            choice==="home"?<h1 className="text-5xl flex items-center text-yellow-500 justify-center font-semibold ">Welcome to the Dashboard</h1>:choice==="Service"? <DashboardServiceComponent/>:choice==="Teams"?<DashboardTeamComponent/>:choice==="Coupons"?<DashboardVoucherComponent/>:choice==="Bookings"?<DashboardBookingsComponent/>:choice==="Make Reservation"?<DashboardReservationComponent/>:choice==="Employee Bookings"?<DashboardEmployeeBooking/>:choice==="Make a Request"?<DashboardHolidayComponent/>:choice==="Requests"?<DashboardRequestsComponent/>:choice==="Requests Status"?<DashboardRequestStatusComponent/>:""
         }
       </div>
     </div>

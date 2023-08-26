@@ -3,7 +3,7 @@ import ServiceMainComponent from '../components/ServiceMainComponent'
 import banner from './Capture.PNG'
 import SearchService from '../components/SearchService'
 import Not_found from '../components/Not_found'
-
+import{Link} from 'react-router-dom'
 const data=
   [
     {
@@ -95,10 +95,16 @@ const Services_main = () => {
 <nav className="flex px-5 py-3 text-gray-500 rounded-lg dark:bg-gray-800 justify-center mb-10" aria-label="Breadcrumb">
         <ol className="inline-flex items-center space-x-1 md:space-x-3">
           <li className="inline-flex items-center">
-            <a href="http://localhost:3000/" className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-yellow-600 dark:text-gray-100 dark:hover:text-white">
+            <Link to="/" >
+                <div class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-yellow-600 dark:text-gray-100 dark:hover:text-white" aria-current="page">
+                <svg aria-hidden="true" className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
+                  Home
+                </div>
+              </Link>
+            {/* <a href="http://localhost:3000/" className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-yellow-600 dark:text-gray-100 dark:hover:text-white">
               <svg aria-hidden="true" className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
               Home
-            </a>
+            </a> */}
           </li>
 
           <li aria-current="page">

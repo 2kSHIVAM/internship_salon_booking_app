@@ -12,6 +12,12 @@ router.post('/getPersonByName',teamController.getPersonByName);
 
 router.post('/getPersonByService',teamController.getPersonByService);
 
+router.post('/grantLeave',teamController.grantLeave);
+
+router.post('/addRequest',teamController.addRequest);
+
+router.post('/updateRequestGrant',teamController.updateRequestGrant);
+
 router.get('/getPerson/:id',teamController.getPerson);
 
 router.delete('/deletePerson/:id',teamController.deletePerson);
